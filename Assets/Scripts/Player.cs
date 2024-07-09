@@ -1,15 +1,19 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     public float speed = 5f;
     public float jumpForce = 5f;
+    public int playerHP = 5; // Player hit points
     private Rigidbody2D rb;
     private bool isGrounded;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Freeze rotation to keep the player upright
     }
 
     void Update()
@@ -57,5 +61,27 @@ public class Player : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Beam"))
+        {
+            playerHP--;
+            Debug.Log("Player hit! Current HP: " + playerHP);
+
+            if (playerHP <= 0)
+            {
+                Die();
+            }
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("Player died!");
+        // Here you can handle the game over logic. For now, we just stop the game.
+        // You can add more game over logic such as displaying a game over screen, restarting the level, etc.
+        Time.timeScale = 0; // This stops the game by freezing all actions.
     }
 }

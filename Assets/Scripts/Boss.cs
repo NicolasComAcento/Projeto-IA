@@ -20,7 +20,7 @@ public class Boss : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Sword"))
+        if (other.gameObject.CompareTag("Sword"))
         {
             bossHP--;
             Debug.Log("Boss hit! Current HP: " + bossHP);
