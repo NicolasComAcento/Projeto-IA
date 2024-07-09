@@ -13,8 +13,10 @@ public class Boss : MonoBehaviour
     public float frontalBeamSpeed = 5f; // Speed at which the frontal beam moves forward
     public int bossHP = 20; // Boss health points
 
+    private BossAgent bossAgent;
     private void Start()
     {
+        bossAgent = GetComponent<BossAgent>();
         StartCoroutine(AttackRoutine());
     }
 
@@ -63,7 +65,7 @@ public class Boss : MonoBehaviour
         GameObject frontalBeam = Instantiate(frontalBeamPrefab, startPosition, Quaternion.identity);
         // Adjust the position and rotation as needed
         frontalBeam.transform.parent = transform; // Optional: parent the beam to the boss
-        
+
         Vector3 endPosition = new Vector3(transform.position.x - 9, transform.position.y, transform.position.z + 2);
 
         float journeyLength = Vector3.Distance(startPosition, endPosition);
@@ -78,6 +80,7 @@ public class Boss : MonoBehaviour
         }
 
         Destroy(frontalBeam);
+        bossAgent.AddReward(-1.0f);
     }
 
     private IEnumerator SkyBeamAttack()
@@ -99,5 +102,6 @@ public class Boss : MonoBehaviour
         }
 
         Destroy(skyBeam);
+        bossAgent.AddReward(-1.0f);
     }
 }

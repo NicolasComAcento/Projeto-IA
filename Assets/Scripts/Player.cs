@@ -74,6 +74,12 @@ public class Player : MonoBehaviour
             {
                 Die();
             }
+            else
+            {
+                Boss boss = FindObjectOfType<Boss>();
+                BossAgent bossAgent = boss.GetComponent<BossAgent>();
+                bossAgent.AddReward(1.0f);
+            }
         }
     }
 
