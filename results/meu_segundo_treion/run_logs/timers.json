@@ -1,0 +1,47 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1720636149",
+        "python_version": "3.8.10 (default, May 19 2021, 13:12:57) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\ezios\\anaconda3\\envs\\unity\\Scripts\\mlagents-learn config.yaml --run-id=meu_segundo_treion",
+        "mlagents_version": "0.29.0",
+        "mlagents_envs_version": "0.29.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "1.8.1+cpu",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1720636182"
+    },
+    "total": 32.7830703,
+    "count": 1,
+    "self": 0.00619559999999808,
+    "children": {
+        "run_training.setup": {
+            "total": 0.08046120000000001,
+            "count": 1,
+            "self": 0.08046120000000001
+        },
+        "TrainerController.start_learning": {
+            "total": 32.6964135,
+            "count": 1,
+            "self": 0.0002685999999982869,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 32.6961364,
+                    "count": 1,
+                    "self": 32.6961364
+                },
+                "trainer_threads": {
+                    "total": 7.000000010748408e-07,
+                    "count": 1,
+                    "self": 7.000000010748408e-07
+                },
+                "TrainerController._save_models": {
+                    "total": 7.799999998781004e-06,
+                    "count": 1,
+                    "self": 7.799999998781004e-06
+                }
+            }
+        }
+    }
+}
