@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     public float speed = 5f;
     public float jumpForce = 5f;
     public int playerHP = 5; // Player hit points
+    public int countAcertos = 0;
     private Rigidbody2D rb;
     private bool isGrounded;
 
@@ -75,9 +76,15 @@ public class Player : MonoBehaviour
                 Die();
             }
             else
-            {
+            {   
                 Boss boss = FindObjectOfType<Boss>();
                 BossAgent bossAgent = boss.GetComponent<BossAgent>();
+                
+                countAcertos++;
+                if(countAcertos == 10){
+                    countAcertos = 0;
+                    boss.escalaDePenalizacao -= 0.1f;
+                }
                 bossAgent.AddReward(1.0f);
             }
         }

@@ -62,11 +62,11 @@ engine_settings:
   no_graphics: false
 environment_parameters: null
 checkpoint_settings:
-  run_id: meu_primeiro_treino
+  run_id: meu_segundo_treion
   initialize_from: null
   load_model: false
   resume: false
-  force: true
+  force: false
   train_model: false
   inference: false
   results_dir: results
