@@ -16,10 +16,12 @@ public class Boss : MonoBehaviour
 
     [HideInInspector]
     public Vector2 frontalBeamTargetPosition = new Vector2(-9, 0); // Posição alvo do ataque frontal
+
     [HideInInspector]
     public Vector2 skyBeamTargetPosition = new Vector2(-7, 0); // Posição alvo do ataque aéreo
 
     private BossAgent bossAgent;
+
     private void Start()
     {
         bossAgent = GetComponent<BossAgent>();
@@ -67,21 +69,33 @@ public class Boss : MonoBehaviour
 
     private IEnumerator FrontalBeamAttack()
     {
-        Vector3 startPosition = new Vector3(transform.position.x - 1, transform.position.y, transform.position.z + 2);
+        Vector3 startPosition = new Vector3(
+            transform.position.x - 1,
+            transform.position.y + frontalBeamTargetPosition.y,
+            transform.position.z + 2
+        );
         GameObject frontalBeam = Instantiate(frontalBeamPrefab, startPosition, Quaternion.identity);
         // Ajustar a posição e rotação conforme necessário
         frontalBeam.transform.parent = transform; // Opcional: parentear o feixe ao boss
 
-        Vector3 endPosition = new Vector3(frontalBeamTargetPosition.x, transform.position.y, transform.position.z + 2);
+        Vector3 endPosition = new Vector3(
+            transform.position.x - 9,
+            transform.position.y + frontalBeamTargetPosition.y,
+            transform.position.z + 2
+        );
 
-        float journeyLength = Vector3.Distance(startPosition, endPosition);
+        float journeyLength = Mathf.Abs(startPosition.y - endPosition.y);
         float startTime = Time.time;
 
         while (Time.time - startTime < beamDuration)
         {
-            float distCovered = (Time.time - startTime) * frontalBeamSpeed;
+            float distCovered = Mathf.Abs(frontalBeam.transform.position.y - startPosition.y);
             float fractionOfJourney = distCovered / journeyLength;
-            frontalBeam.transform.position = Vector3.Lerp(startPosition, endPosition, fractionOfJourney);
+            frontalBeam.transform.position = Vector3.Lerp(
+                startPosition,
+                endPosition,
+                fractionOfJourney
+            );
             yield return null;
         }
 
@@ -99,17 +113,29 @@ public class Boss : MonoBehaviour
 
     private IEnumerator SkyBeamAttack()
     {
-        Vector3 startPosition = new Vector3(transform.position.x + skyBeamTargetPosition.x, transform.position.y + skyBeamStartHeight, transform.position.z + 2);
+        Vector3 startPosition = new Vector3(
+            transform.position.x + skyBeamTargetPosition.x,
+            transform.position.y + skyBeamStartHeight,
+            transform.position.z + 2
+        );
         GameObject skyBeam = Instantiate(skyBeamPrefab, startPosition, Quaternion.identity);
         // Ajustar a posição e rotação conforme necessário
         skyBeam.transform.parent = transform; // Opcional: parentear o feixe ao boss
 
         float elapsedTime = 0f;
-        Vector3 endPosition = new Vector3(skyBeamTargetPosition.x, transform.position.y, transform.position.z + 2);
+        Vector3 endPosition = new Vector3(
+            skyBeamTargetPosition.x,
+            transform.position.y,
+            transform.position.z + 2
+        );
 
         while (elapsedTime < beamDuration)
         {
-            skyBeam.transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / beamDuration);
+            skyBeam.transform.position = Vector3.Lerp(
+                startPosition,
+                endPosition,
+                elapsedTime / beamDuration
+            );
             elapsedTime += Time.deltaTime;
             yield return null;
         }
