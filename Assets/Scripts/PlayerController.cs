@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
     public float speed = 5f;
     public float jumpForce = 5f;
     public int playerHP = 5; // Player hit points
-    public GameObject attackPrefab; // Prefab do ataque
+    public GameObject weapon; // Objeto da arma
     public Transform attackPoint; // Ponto de origem do ataque
     private Rigidbody2D rb;
     private bool isGrounded;
@@ -86,10 +86,36 @@ public class PlayerController : MonoBehaviour
 
     void Attack()
     {
-        if (attackPrefab != null && attackPoint != null)
+        if (weapon != null)
         {
-            Instantiate(attackPrefab, attackPoint.position, attackPoint.rotation);
+            StartCoroutine(WeaponAttack());
         }
+    }
+
+    IEnumerator WeaponAttack()
+    {
+        Vector3 originalPosition = weapon.transform.localPosition;
+        Vector3 attackPosition = originalPosition + new Vector3(0, -0.5f, 0); // Ajuste a posição conforme necessário
+
+        float elapsedTime = 0f;
+        float attackDuration = 0.1f; // Duração do ataque
+
+        while (elapsedTime < attackDuration)
+        {
+            weapon.transform.localPosition = Vector3.Lerp(originalPosition, attackPosition, (elapsedTime / attackDuration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        elapsedTime = 0f;
+        while (elapsedTime < attackDuration)
+        {
+            weapon.transform.localPosition = Vector3.Lerp(attackPosition, originalPosition, (elapsedTime / attackDuration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        weapon.transform.localPosition = originalPosition;
     }
 
     void OnCollisionStay2D(Collision2D collision)

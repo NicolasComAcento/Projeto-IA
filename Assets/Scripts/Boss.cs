@@ -28,7 +28,7 @@ public class Boss : MonoBehaviour
         StartCoroutine(AttackRoutine());
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Sword"))
         {
@@ -84,9 +84,6 @@ public class Boss : MonoBehaviour
             transform.position.z + 2
         );
 
-        // Debug.Log($"Frontal Beam Start Position: {startPosition}");
-        // Debug.Log($"Frontal Beam End Position: {endPosition}");
-
         float journeyLength = Vector3.Distance(startPosition, endPosition);
         float startTime = Time.time;
 
@@ -130,7 +127,6 @@ public class Boss : MonoBehaviour
             transform.position.z + 2
         );
 
-        Debug.Log($"Sky Beam Start Position: {startPosition}");
         float elapsedTime = 0f;
 
         while (elapsedTime < beamDuration)
