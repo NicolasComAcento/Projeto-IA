@@ -31,27 +31,28 @@ public class Boss : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other)
+{
+    // Verifica se o objeto colidido é a "Sword" e se o Boss pode1 receber dano
+    if (other.gameObject.CompareTag("Sword") && canTakeDamage && !this.gameObject.CompareTag("Beam"))
     {
-        // Verifica se o objeto colidido é a "Sword" e se o Boss pode receber dano
-        if (other.gameObject.CompareTag("Sword") && canTakeDamage)
+        // Verifica se o objeto colidido não é um "Beam"
         {
-            // Verifica se a "Sword" não está colidindo com um objeto da tag "Beam"
-            if (gameObject.CompareTag("Boss"))
-            {
-                bossHP--;
-                Debug.Log("Boss hit! Current HP: " + bossHP);
+            bossHP--;
+            Debug.Log("Boss hit! Current HP: " + bossHP);
 
-                if (bossHP <= 0)
-                {
-                    Die();
-                }
-                else
-                {
-                    StartCoroutine(DamageCooldown());
-                }
+            if (bossHP <= 0)
+            {
+                Die();
+            }
+            else
+            {
+                StartCoroutine(DamageCooldown());
             }
         }
     }
+}
+
+
 
     private void Die()
     {
@@ -86,81 +87,83 @@ public class Boss : MonoBehaviour
     }
 
     private IEnumerator FrontalBeamAttack()
+{
+    Vector3 startPosition = new Vector3(
+        transform.position.x - 1,
+        transform.position.y,
+        transform.position.z + 2
+    );
+    GameObject frontalBeam = Instantiate(frontalBeamPrefab, startPosition, Quaternion.identity);
+    // Não parentear o feixe ao boss
+    // frontalBeam.transform.parent = transform; // Removido
+
+    Vector3 endPosition = new Vector3(
+        frontalBeamTargetPosition.x,
+        transform.position.y,
+        transform.position.z + 2
+    );
+
+    float journeyLength = Vector3.Distance(startPosition, endPosition);
+    float startTime = Time.time;
+
+    while (Time.time - startTime < beamDuration)
     {
-        Vector3 startPosition = new Vector3(
-            transform.position.x - 1,
-            transform.position.y,
-            transform.position.z + 2
+        float distCovered = (Time.time - startTime) * frontalBeamSpeed;
+        float fractionOfJourney = distCovered / journeyLength;
+        frontalBeam.transform.position = Vector3.Lerp(
+            startPosition,
+            endPosition,
+            fractionOfJourney
         );
-        GameObject frontalBeam = Instantiate(frontalBeamPrefab, startPosition, Quaternion.identity);
-        // Ajustar a posição e rotação conforme necessário
-        frontalBeam.transform.parent = transform; // Opcional: parentear o feixe ao boss
-
-        Vector3 endPosition = new Vector3(
-            frontalBeamTargetPosition.x,
-            transform.position.y,
-            transform.position.z + 2
-        );
-
-        float journeyLength = Vector3.Distance(startPosition, endPosition);
-        float startTime = Time.time;
-
-        while (Time.time - startTime < beamDuration)
-        {
-            float distCovered = (Time.time - startTime) * frontalBeamSpeed;
-            float fractionOfJourney = distCovered / journeyLength;
-            frontalBeam.transform.position = Vector3.Lerp(
-                startPosition,
-                endPosition,
-                fractionOfJourney
-            );
-            yield return null;
-        }
-
-        Destroy(frontalBeam);
-
-        countErros++;
-        if (countErros == 10)
-        {
-            countErros = 0;
-            escalaDePenalizacao += 0.1f;
-        }
-
-        bossAgent.AddReward(-1.0f * escalaDePenalizacao);
+        yield return null;
     }
 
-    private IEnumerator SkyBeamAttack()
+    Destroy(frontalBeam);
+
+    countErros++;
+    if (countErros == 10)
     {
-        Vector3 startPosition = new Vector3(
-            transform.position.x + skyBeamTargetPosition.x,
-            transform.position.y + skyBeamStartHeight,
-            transform.position.z + 2
-        );
-        GameObject skyBeam = Instantiate(skyBeamPrefab, startPosition, Quaternion.identity);
-        skyBeam.transform.parent = transform; // Opcional: parentear o feixe ao boss
-
-        Vector3 endPosition = new Vector3(
-            skyBeamTargetPosition.x,
-            transform.position.y,
-            transform.position.z + 2
-        );
-
-        float elapsedTime = 0f;
-
-        while (elapsedTime < beamDuration)
-        {
-            skyBeam.transform.position = Vector3.Lerp(
-                startPosition,
-                endPosition,
-                elapsedTime / beamDuration
-            );
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        Destroy(skyBeam);
-
-        // Se o sky beam não acertou o player, penalizar o BossAgent
-        bossAgent.AddReward(-1.0f);
+        countErros = 0;
+        escalaDePenalizacao += 0.1f;
     }
+
+    bossAgent.AddReward(-1.0f * escalaDePenalizacao);
+}
+
+private IEnumerator SkyBeamAttack()
+{
+    Vector3 startPosition = new Vector3(
+        transform.position.x + skyBeamTargetPosition.x,
+        transform.position.y + skyBeamStartHeight,
+        transform.position.z + 2
+    );
+    GameObject skyBeam = Instantiate(skyBeamPrefab, startPosition, Quaternion.identity);
+    // Não parentear o feixe ao boss
+    // skyBeam.transform.parent = transform; // Removido
+
+    Vector3 endPosition = new Vector3(
+        skyBeamTargetPosition.x,
+        transform.position.y,
+        transform.position.z + 2
+    );
+
+    float elapsedTime = 0f;
+
+    while (elapsedTime < beamDuration)
+    {
+        skyBeam.transform.position = Vector3.Lerp(
+            startPosition,
+            endPosition,
+            elapsedTime / beamDuration
+        );
+        elapsedTime += Time.deltaTime;
+        yield return null;
+    }
+
+    Destroy(skyBeam);
+
+    // Se o sky beam não acertou o player, penalizar o BossAgent
+    bossAgent.AddReward(-1.0f);
+}
+
 }
