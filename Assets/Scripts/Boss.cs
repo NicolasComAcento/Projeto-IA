@@ -13,6 +13,7 @@ public class Boss : MonoBehaviour
     public int bossHP = 20; // Boss health points
     public float escalaDePenalizacao = 1;
     public int countErros = 0;
+    public float damageCooldown = 0.2f; // Cooldown duration in seconds
 
     [HideInInspector]
     public Vector2 frontalBeamTargetPosition = new Vector2(-9, 0); // Posição alvo do ataque frontal
@@ -21,6 +22,7 @@ public class Boss : MonoBehaviour
     public Vector2 skyBeamTargetPosition = new Vector2(-7, 0); // Posição alvo do ataque aéreo
 
     private BossAgent bossAgent;
+    private bool canTakeDamage = true; // Flag to control damage cooldown
 
     private void Start()
     {
@@ -30,14 +32,23 @@ public class Boss : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Sword"))
+        // Verifica se o objeto colidido é a "Sword" e se o Boss pode receber dano
+        if (other.gameObject.CompareTag("Sword") && canTakeDamage)
         {
-            bossHP--;
-            Debug.Log("Boss hit! Current HP: " + bossHP);
-
-            if (bossHP <= 0)
+            // Verifica se a "Sword" não está colidindo com um objeto da tag "Beam"
+            if (gameObject.CompareTag("Boss"))
             {
-                Die();
+                bossHP--;
+                Debug.Log("Boss hit! Current HP: " + bossHP);
+
+                if (bossHP <= 0)
+                {
+                    Die();
+                }
+                else
+                {
+                    StartCoroutine(DamageCooldown());
+                }
             }
         }
     }
@@ -46,6 +57,13 @@ public class Boss : MonoBehaviour
     {
         Debug.Log("Boss defeated!");
         Destroy(gameObject);
+    }
+
+    private IEnumerator DamageCooldown()
+    {
+        canTakeDamage = false;
+        yield return new WaitForSeconds(damageCooldown);
+        canTakeDamage = true;
     }
 
     private IEnumerator AttackRoutine()
