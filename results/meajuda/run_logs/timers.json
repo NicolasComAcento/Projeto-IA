@@ -1,0 +1,42 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1721243275",
+        "python_version": "3.8.10 (tags/v3.8.10:3d8993a, May  3 2021, 11:48:03) [MSC v.1928 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\nicol\\ml-agents\\venv\\Scripts\\mlagents-learn BossAgent.yaml --run-id=meajuda",
+        "mlagents_version": "0.29.0",
+        "mlagents_envs_version": "0.29.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "1.8.1+cpu",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1721243289"
+    },
+    "total": 14.452945,
+    "count": 1,
+    "self": 0.006268600000000291,
+    "children": {
+        "run_training.setup": {
+            "total": 0.07782699999999998,
+            "count": 1,
+            "self": 0.07782699999999998
+        },
+        "TrainerController.start_learning": {
+            "total": 14.3688494,
+            "count": 1,
+            "self": 9.109999999878937e-05,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 14.368745400000002,
+                    "count": 1,
+                    "self": 14.368745400000002
+                },
+                "TrainerController._save_models": {
+                    "total": 1.2899999999760325e-05,
+                    "count": 1,
+                    "self": 1.2899999999760325e-05
+                }
+            }
+        }
+    }
+}

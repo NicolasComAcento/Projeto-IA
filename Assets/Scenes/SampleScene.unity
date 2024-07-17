@@ -611,7 +611,7 @@ MonoBehaviour:
   skyBeamStartHeight: 10
   skyBeamSpeed: 5
   frontalBeamSpeed: 5
-  bossHP: 20
+  bossHP: 900
   escalaDePenalizacao: 1
   countErros: 0
   damageCooldown: 0.2
@@ -713,8 +713,8 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 1
-  m_BehaviorType: 1
-  m_BehaviorName: BossBehavior
+  m_BehaviorType: 0
+  m_BehaviorName: MyBehavior
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -1177,15 +1177,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4263490712240917825, guid: f22d59580756dcb45aa91af9cd4e0b7e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.8760595
+      value: 0.9775726
       objectReference: {fileID: 0}
     - target: {fileID: 4263490712240917825, guid: f22d59580756dcb45aa91af9cd4e0b7e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -19.9721
+      value: -19.9843
       objectReference: {fileID: 0}
     - target: {fileID: 4263490712240917825, guid: f22d59580756dcb45aa91af9cd4e0b7e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.46169996
+      value: 5.2171
       objectReference: {fileID: 0}
     - target: {fileID: 4263490712240917825, guid: f22d59580756dcb45aa91af9cd4e0b7e, type: 3}
       propertyPath: m_LocalPosition.z
