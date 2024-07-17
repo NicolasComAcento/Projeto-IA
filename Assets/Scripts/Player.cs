@@ -14,21 +14,21 @@ public class Player : Agent
     public Transform attackPoint; // Ponto de origem do ataque
     private Rigidbody2D rb;
     public bool isGrounded;
-    private Vector2 initialPosition;
+    //private Vector2 initialPosition;
     private int initialPlayerHP;
 
     public override void Initialize()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Freeze rotation to keep the player upright
-        initialPosition = transform.localPosition;
+        //initialPosition = transform.localPosition;
         initialPlayerHP = playerHP;
     }
 
     public override void OnEpisodeBegin()
     {
         // Reset player position and health
-        transform.localPosition = initialPosition;
+        //transform.localPosition = initialPosition;
         playerHP = initialPlayerHP;
         rb.velocity = Vector2.zero;
     }
@@ -111,6 +111,7 @@ public class Player : Agent
             playerHP--;
             Debug.Log("Player hit! Current HP: " + playerHP);
 
+            
             if (playerHP <= 0)
             {
                 Die();

@@ -13,7 +13,9 @@ public class Boss : MonoBehaviour
     public int bossHP = 20; // Boss health points
     public float escalaDePenalizacao = 1;
     public int countErros = 0;
+    public int countAcertos = 0; // Contador de acertos
     public float damageCooldown = 0.2f; // Cooldown duration in seconds
+    public float frontalBeamAdjustmentDistance = 0.5f; // Ajuste vertical da posição do feixe
 
     [HideInInspector]
     public Vector2 frontalBeamTargetPosition = new Vector2(-9, 0); // Posição alvo do ataque frontal
@@ -32,22 +34,18 @@ public class Boss : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Verifica se o objeto colidido é a "Sword" e se o Boss pode1 receber dano
-        if (other.gameObject.CompareTag("Sword") && canTakeDamage && !this.gameObject.CompareTag("Beam"))
+        if (other.gameObject.CompareTag("Sword") && canTakeDamage)
         {
-            // Verifica se o objeto colidido não é um "Beam"
-            {
-                bossHP--;
-                Debug.Log("Boss hit! Current HP: " + bossHP);
+            bossHP--;
+            Debug.Log("Boss hit! Current HP: " + bossHP);
 
-                if (bossHP <= 0)
-                {
-                    Die();
-                }
-                else
-                {
-                    StartCoroutine(DamageCooldown());
-                }
+            if (bossHP <= 0)
+            {
+                Die();
+            }
+            else
+            {
+                StartCoroutine(DamageCooldown());
             }
         }
     }
@@ -85,6 +83,12 @@ public class Boss : MonoBehaviour
         }
     }
 
+    private void AdjustBeamTargetPosition(bool hitPlayer)
+    {
+        float adjustment = hitPlayer ? -frontalBeamAdjustmentDistance : frontalBeamAdjustmentDistance;
+        frontalBeamTargetPosition.y += adjustment; // Ajusta a posição Y do ataque frontal
+    }
+
     private IEnumerator FrontalBeamAttack()
     {
         Vector3 startPosition = new Vector3(
@@ -93,12 +97,10 @@ public class Boss : MonoBehaviour
             transform.position.z + 2
         );
         GameObject frontalBeam = Instantiate(frontalBeamPrefab, startPosition, Quaternion.identity);
-        // Não parentear o feixe ao boss
-        // frontalBeam.transform.parent = transform; // Removido
 
         Vector3 endPosition = new Vector3(
             frontalBeamTargetPosition.x,
-            transform.position.y,
+            frontalBeamTargetPosition.y, // Usar a posição ajustada
             transform.position.z + 2
         );
 
@@ -130,7 +132,15 @@ public class Boss : MonoBehaviour
 
         if (hitPlayer)
         {
+            countAcertos++; // Incrementar contador de acertos
             bossAgent.AddReward(1.0f); // Recompensa ao acertar o jogador
+            
+            // Reduzir a penalização a cada 5 acertos
+            if (countAcertos >= 5)
+            {
+                countAcertos = 0;
+                escalaDePenalizacao = Mathf.Max(1, escalaDePenalizacao - 0.1f); // Não deixar a penalização abaixo de 1
+            }
         }
         else
         {
@@ -140,9 +150,10 @@ public class Boss : MonoBehaviour
                 countErros = 0;
                 escalaDePenalizacao += 0.1f;
             }
-
             bossAgent.AddReward(-1.0f * escalaDePenalizacao); // Penalidade ao errar
         }
+
+        AdjustBeamTargetPosition(hitPlayer); // Ajustar a posição após cada ataque
     }
 
     private IEnumerator SkyBeamAttack()
@@ -153,8 +164,6 @@ public class Boss : MonoBehaviour
             transform.position.z + 2
         );
         GameObject skyBeam = Instantiate(skyBeamPrefab, startPosition, Quaternion.identity);
-        // Não parentear o feixe ao boss
-        // skyBeam.transform.parent = transform; // Removido
 
         Vector3 endPosition = new Vector3(
             skyBeamTargetPosition.x,
@@ -187,11 +196,22 @@ public class Boss : MonoBehaviour
 
         if (hitPlayer)
         {
+            countAcertos++; // Incrementar contador de acertos
             bossAgent.AddReward(1.0f); // Recompensa ao acertar o jogador
+            
+            // Reduzir a penalização a cada 5 acertos
+            if (countAcertos >= 5)
+            {
+                countAcertos = 0;
+                escalaDePenalizacao = Mathf.Max(1, escalaDePenalizacao - 0.1f); // Não deixar a penalização abaixo de 1
+            }
         }
         else
         {
             bossAgent.AddReward(-1.0f); // Penalidade ao errar
         }
+
+        // Ajuste a posição do ataque aéreo se necessário
+        AdjustBeamTargetPosition(hitPlayer); // Opcional, se você quiser aplicar a mesma lógica
     }
 }
