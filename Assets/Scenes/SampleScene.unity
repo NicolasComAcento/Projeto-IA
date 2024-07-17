@@ -614,7 +614,9 @@ MonoBehaviour:
   bossHP: 900
   escalaDePenalizacao: 1
   countErros: 0
+  countAcertos: 0
   damageCooldown: 0.2
+  frontalBeamAdjustmentDistance: 1
   frontalBeamTargetPosition: {x: -9, y: 0}
   skyBeamTargetPosition: {x: -7, y: 0}
 --- !u!61 &1052202126
@@ -712,7 +714,7 @@ MonoBehaviour:
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
-  m_InferenceDevice: 1
+  m_InferenceDevice: 3
   m_BehaviorType: 0
   m_BehaviorName: My Behavior
   TeamId: 0
@@ -967,7 +969,7 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
-  speed: 5
+  speed: 0
   jumpForce: 10
   playerHP: 900
   attackPrefab: {fileID: 656903527}
@@ -1079,7 +1081,7 @@ Transform:
   m_GameObject: {fileID: 1455048136}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.973, y: 0.651, z: 0}
+  m_LocalPosition: {x: -7.53, y: 0.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1175,17 +1177,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: raio-removebg-preview (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2025134755380485423, guid: f22d59580756dcb45aa91af9cd4e0b7e, type: 3}
+      propertyPath: m_Size.x
+      value: 3.1893997
+      objectReference: {fileID: 0}
+    - target: {fileID: 2025134755380485423, guid: f22d59580756dcb45aa91af9cd4e0b7e, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.08140612
+      objectReference: {fileID: 0}
+    - target: {fileID: 4263490712240917825, guid: f22d59580756dcb45aa91af9cd4e0b7e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5605311
+      objectReference: {fileID: 0}
     - target: {fileID: 4263490712240917825, guid: f22d59580756dcb45aa91af9cd4e0b7e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.9775726
+      value: 0.8428838
       objectReference: {fileID: 0}
     - target: {fileID: 4263490712240917825, guid: f22d59580756dcb45aa91af9cd4e0b7e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -19.9843
+      value: -20.5814
       objectReference: {fileID: 0}
     - target: {fileID: 4263490712240917825, guid: f22d59580756dcb45aa91af9cd4e0b7e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.2171
+      value: 5.553
       objectReference: {fileID: 0}
     - target: {fileID: 4263490712240917825, guid: f22d59580756dcb45aa91af9cd4e0b7e, type: 3}
       propertyPath: m_LocalPosition.z
