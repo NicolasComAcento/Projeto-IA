@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Boss : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class Boss : MonoBehaviour
     public float skyBeamStartHeight = 10f; // Starting height of the sky beam
     public float skyBeamSpeed = 5f; // Speed at which the sky beam descends
     public float frontalBeamSpeed = 5f; // Speed at which the frontal beam moves forward
-    public int bossHP = 20; // Boss health points
+    public int bossHP = 50; // Boss health points
     public float escalaDePenalizacao = 1;
     public int countErros = 0;
     public int countAcertos = 0; // Contador de acertos
@@ -55,6 +56,20 @@ public class Boss : MonoBehaviour
         Debug.Log("Boss defeated!");
         Destroy(gameObject);
         bossAgent.AddReward(1.0f); // Recompensa ao derrotar o boss
+        IncrementDifficulty(); // Incrementar dificuldade do Boss
+        RestartLevel(); // Reiniciar o nível
+    }
+
+    private void IncrementDifficulty()
+    {
+        attackInterval = Mathf.Max(1f, attackInterval - 0.5f); // Diminuir o intervalo entre ataques
+        skyBeamSpeed += 0.5f; // Aumentar a velocidade do feixe aéreo
+        frontalBeamSpeed += 0.5f; // Aumentar a velocidade do feixe frontal
+    }
+
+    private void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private IEnumerator DamageCooldown()

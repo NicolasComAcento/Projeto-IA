@@ -57,13 +57,13 @@ public class BossAgent : Agent
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         var continuousActionsOut = actionsOut.ContinuousActions;
-        continuousActionsOut[0] = 0; // Sem mudanças por padrão
-        continuousActionsOut[1] = 0; // Sem mudanças por padrão
+        continuousActionsOut[0] = Random.Range(-1f, 1f); // Mudança aleatória na posição do feixe frontal
+        continuousActionsOut[1] = Random.Range(-1f, 1f); // Mudança aleatória na posição do feixe aéreo
     }
 
     public override void OnEpisodeBegin()
     {
-        player.playerHP = 5;
+        player.playerHP = initialPlayerHP;
         player.transform.localPosition = new Vector3(0, 0.5f, -5);
     }
 }

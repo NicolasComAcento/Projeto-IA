@@ -611,7 +611,7 @@ MonoBehaviour:
   skyBeamStartHeight: 10
   skyBeamSpeed: 5
   frontalBeamSpeed: 5
-  bossHP: 900
+  bossHP: 50
   escalaDePenalizacao: 1
   countErros: 0
   countAcertos: 0
@@ -969,9 +969,9 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
-  speed: 0
+  speed: 5
   jumpForce: 10
-  playerHP: 900
+  playerHP: 10
   attackPrefab: {fileID: 656903527}
   attackPoint: {fileID: 1349680956}
   isGrounded: 0
@@ -1158,9 +1158,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeaaef490e822d54180175c18eaa0574, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
+  speed: 5
   jumpForce: 10
-  playerHP: 900
+  playerHP: 10
   weapon: {fileID: 656903527}
   attackPoint: {fileID: 1052202124}
   minX: -8

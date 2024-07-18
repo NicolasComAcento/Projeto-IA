@@ -60,13 +60,13 @@ public class Player : Agent
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
-{
-    var continuousActionsOut = actionsOut.ContinuousActions;
-    // Geração de ações aleatórias
-    continuousActionsOut[0] = Random.Range(-1f, 1f); // Movimento para frente e para trás
-    continuousActionsOut[1] = Random.value > 0.8f ? 1f : 0f;  // Salto (20% de chance de pular)
-    continuousActionsOut[2] = Random.value > 0.7f ? 1f : 0f;  // Ataque (30% de chance de atacar)
-}
+    {
+        var continuousActionsOut = actionsOut.ContinuousActions;
+        // Geração de ações aleatórias
+        continuousActionsOut[0] = Random.Range(-1f, 1f); // Movimento para frente e para trás
+        continuousActionsOut[1] = Random.value > 0.8f ? 1f : 0f;  // Salto (20% de chance de pular)
+        continuousActionsOut[2] = Random.value > 0.7f ? 1f : 0f;  // Ataque (30% de chance de atacar)
+    }
 
     void Move(float direction)
     {
@@ -111,7 +111,6 @@ public class Player : Agent
             playerHP--;
             Debug.Log("Player hit! Current HP: " + playerHP);
 
-            
             if (playerHP <= 0)
             {
                 Die();
