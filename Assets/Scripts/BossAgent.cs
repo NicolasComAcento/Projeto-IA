@@ -1,69 +1,79 @@
-using Unity.MLAgents;
-using Unity.MLAgents.Actuators;
-using Unity.MLAgents.Sensors;
 using UnityEngine;
+using Unity.MLAgents;
+using Unity.MLAgents.Sensors;
+using Unity.MLAgents.Actuators;
 
 public class BossAgent : Agent
 {
-    private Rigidbody2D bossRb;
-    private Boss boss;
-    private Player player;
-    private float initialAttackInterval;
-    private int initialPlayerHP;
+    [SerializeField] private Transform targetTransform;
+    [SerializeField] private GameObject[] floorObjects; // Altere para um array de GameObjects
+    private Rigidbody2D rb;
 
-    public override void Initialize()
+    private void Start()
     {
-        boss = GetComponent<Boss>();
-        player = FindObjectOfType<Player>();
-        initialAttackInterval = boss.attackInterval;
-        initialPlayerHP = player.playerHP;
-    }
-
-    // variáveis que vão ser usadas
-    public override void CollectObservations(VectorSensor sensor)
-    {
-        // Observações do Boss
-        sensor.AddObservation(boss.attackInterval);
-        sensor.AddObservation(boss.bossHP);
-
-        // Observações do Player
-        sensor.AddObservation(player.playerHP);
-        sensor.AddObservation(player.transform.localPosition);
-
-        // Observações adicionais, se necessário
-        sensor.AddObservation(boss.skyBeamTargetPosition.x);
-    }
-
-    public override void OnActionReceived(ActionBuffers actionBuffers)
-    {
-        float frontalBeamPositionChange = actionBuffers.ContinuousActions[0];
-        float skyBeamPositionChange = actionBuffers.ContinuousActions[1];
-
-        // Ajustar posições dos feixes
-        boss.frontalBeamTargetPosition += new Vector2(frontalBeamPositionChange, 0);
-        boss.skyBeamTargetPosition += new Vector2(skyBeamPositionChange, 0);
-
-        // Garantir que as novas posições estejam dentro dos limites aceitáveis
-        boss.frontalBeamTargetPosition = new Vector2(
-            Mathf.Clamp(boss.frontalBeamTargetPosition.x, -9f, -1f),
-            boss.frontalBeamTargetPosition.y
-        );
-        boss.skyBeamTargetPosition = new Vector2(
-            Mathf.Clamp(boss.skyBeamTargetPosition.x, -7f, -1f),
-            boss.skyBeamTargetPosition.y
-        );
-    }
-
-    public override void Heuristic(in ActionBuffers actionsOut)
-    {
-        var continuousActionsOut = actionsOut.ContinuousActions;
-        continuousActionsOut[0] = Random.Range(-1f, 1f); // Mudança aleatória na posição do feixe frontal
-        continuousActionsOut[1] = Random.Range(-1f, 1f); // Mudança aleatória na posição do feixe aéreo
+        rb = GetComponent<Rigidbody2D>();
     }
 
     public override void OnEpisodeBegin()
     {
-        player.playerHP = initialPlayerHP;
-        player.transform.localPosition = new Vector3(0, 0.5f, -5);
+        transform.localPosition = Vector3.zero;
+        rb.velocity = Vector2.zero; // Resetar a velocidade do Rigidbody2D
+    }
+
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        sensor.AddObservation(transform.localPosition);
+        sensor.AddObservation(targetTransform.localPosition);
+    }
+
+    public override void OnActionReceived(ActionBuffers actions)
+    {
+        float moveX = actions.ContinuousActions[0];
+        float moveY = actions.ContinuousActions[1];
+
+        Vector2 movement = new Vector2(moveX, moveY) * Time.deltaTime * 100f; // Movimento em 2D
+        rb.velocity = movement; // Aplicar movimento ao Rigidbody2D
+    }
+
+    public override void Heuristic(in ActionBuffers actionsOut)
+    {
+        ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
+        continuousActions[0] = Input.GetAxisRaw("Horizontal");
+        continuousActions[1] = Input.GetAxisRaw("Vertical");
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.TryGetComponent<Goal>(out Goal goal))
+        {
+            SetReward(+1f);
+            ChangeFloorObjectsColor(Color.green); // Altere a cor para verde
+            EndEpisode(); // Finaliza o episódio apenas para este agente
+        }
+        else if (other.TryGetComponent<Wall>(out Wall wall))
+        {
+            SetReward(-1f);
+            ChangeFloorObjectsColor(Color.red); // Altere a cor para vermelho
+            EndEpisode(); // Finaliza o episódio apenas para este agente
+        }
+    }
+
+    private void ChangeFloorObjectsColor(Color color)
+    {
+        foreach (GameObject floorObject in floorObjects)
+        {
+            if (floorObject != null)
+            {
+                SpriteRenderer spriteRenderer = floorObject.GetComponent<SpriteRenderer>();
+                if (spriteRenderer != null)
+                {
+                    spriteRenderer.color = color;
+                }
+                else
+                {
+                    Debug.LogWarning("SpriteRenderer not found on " + floorObject.name);
+                }
+            }
+        }
     }
 }
