@@ -7,6 +7,7 @@ public class BossAgent : Agent
 {
     [SerializeField] private Transform targetTransform;
     [SerializeField] private GameObject[] floorObjects; // Altere para um array de GameObjects
+    [SerializeField] private Player player; // Adicione uma referência ao script Player
     private Rigidbody2D rb;
 
     private void Start()
@@ -16,8 +17,14 @@ public class BossAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        transform.localPosition = Vector3.zero;
+        transform.localPosition = new Vector3(Random.Range(6.76f, 0.76f), Random.Range(3.28f, -0.85f), 0);
         rb.velocity = Vector2.zero; // Resetar a velocidade do Rigidbody2D
+
+        // Chamar o método OnEpisodeBegin do player para reposicionar o player
+        if (player != null)
+        {
+            player.OnEpisodeBegin();
+        }
     }
 
     public override void CollectObservations(VectorSensor sensor)

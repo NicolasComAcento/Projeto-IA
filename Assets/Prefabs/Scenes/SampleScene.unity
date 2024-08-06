@@ -1044,6 +1044,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5720687415429910764, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 5720687415429910764, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.25
+      objectReference: {fileID: 0}
     - target: {fileID: 7291047773954886375, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -23.2
@@ -1088,7 +1096,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ambiente (14)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8443592438504876582, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.81699365
+      objectReference: {fileID: 0}
+    - target: {fileID: 8443592438504876582, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5751942
+      objectReference: {fileID: 0}
+    - target: {fileID: 8443592438504876582, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 8443592438504876582, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.45
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2392155814145643764, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
