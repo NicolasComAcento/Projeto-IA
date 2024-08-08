@@ -10,6 +10,9 @@ public class BossAgent : Agent
     [SerializeField] private Player player; // Adicione uma referência ao script Player
     private Rigidbody2D rb;
 
+    private float timer;
+    private const float TimeLimit = 20f; // Limite de tempo de 20 segundos
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -17,14 +20,17 @@ public class BossAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        transform.localPosition = new Vector3(Random.Range(6.76f, 0.76f), Random.Range(3.28f, -0.85f), 0);
+        // Resetar a posição do boss
+        transform.localPosition = Vector3.zero;
         rb.velocity = Vector2.zero; // Resetar a velocidade do Rigidbody2D
+        timer = 0f; // Resetar o timer no início do episódio
 
-        // Chamar o método OnEpisodeBegin do player para reposicionar o player
-        if (player != null)
-        {
-            player.OnEpisodeBegin();
-        }
+        // Reposicionar o player em uma posição aleatória dentro do intervalo
+        player.transform.localPosition = new Vector3(
+            Random.Range(-7.96f, -2.396f),
+            Random.Range(3.75f, -1.45f),
+            0
+        );
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -40,6 +46,16 @@ public class BossAgent : Agent
 
         Vector2 movement = new Vector2(moveX, moveY) * Time.deltaTime * 100f; // Movimento em 2D
         rb.velocity = movement; // Aplicar movimento ao Rigidbody2D
+
+        // Atualizar o timer
+        timer += Time.deltaTime;
+
+        // Penalidade se o tempo limite for alcançado sem acertar o player
+        if (timer > TimeLimit)
+        {
+            SetReward(-0.5f);
+            EndEpisode();
+        }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -59,9 +75,8 @@ public class BossAgent : Agent
         }
         else if (other.TryGetComponent<Wall>(out Wall wall))
         {
-            SetReward(-1f);
+            SetReward(-0.1f); // Penalidade menor ao bater na parede
             ChangeFloorObjectsColor(Color.red); // Altere a cor para vermelho
-            EndEpisode(); // Finaliza o episódio apenas para este agente
         }
     }
 
