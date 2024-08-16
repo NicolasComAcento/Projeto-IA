@@ -1,36 +1,39 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Boss : MonoBehaviour
 {
     public GameObject frontalBeamPrefab;
     public GameObject skyBeamPrefab;
-    public float attackInterval = 5f; // Time between attacks
-    public float beamDuration = 4f; // Time the beams stay active
-    public float skyBeamStartHeight = 10f; // Starting height of the sky beam
-    public float skyBeamSpeed = 5f; // Speed at which the sky beam descends
-    public float frontalBeamSpeed = 5f; // Speed at which the frontal beam moves forward
-    public int bossHP = 50; // Boss health points
+    public float attackInterval = 5f;
+    public float beamDuration = 4f;
+    public float skyBeamStartHeight = 10f;
+    public float skyBeamSpeed = 5f;
+    public float frontalBeamSpeed = 5f;
+    public int bossHP = 10; // Atualizado para 10
     public float escalaDePenalizacao = 1;
     public int countErros = 0;
-    public int countAcertos = 0; // Contador de acertos
-    public float damageCooldown = 0.2f; // Cooldown duration in seconds
-    public float frontalBeamAdjustmentDistance = 0.5f; // Ajuste vertical da posição do feixe
+    public int countAcertos = 0;
+    public float damageCooldown = 0.2f;
+    public float frontalBeamAdjustmentDistance = 0.5f;
+    public TextMeshProUGUI bossHealthText; // Referência ao TextMeshPro
 
     [HideInInspector]
-    public Vector2 frontalBeamTargetPosition = new Vector2(-9, 0); // Posição alvo do ataque frontal
+    public Vector2 frontalBeamTargetPosition = new Vector2(-9, 0);
 
     [HideInInspector]
-    public Vector2 skyBeamTargetPosition = new Vector2(-7, 0); // Posição alvo do ataque aéreo
+    public Vector2 skyBeamTargetPosition = new Vector2(-7, 0);
 
     private BossAgent bossAgent;
-    private bool canTakeDamage = true; // Flag to control damage cooldown
+    private bool canTakeDamage = true;
 
     private void Start()
     {
         bossAgent = GetComponent<BossAgent>();
         StartCoroutine(AttackRoutine());
+        UpdateBossHealthText(); // Atualiza o texto da vida do Boss no início
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -39,6 +42,7 @@ public class Boss : MonoBehaviour
         {
             bossHP--;
             Debug.Log("Boss hit! Current HP: " + bossHP);
+            UpdateBossHealthText(); // Atualiza o texto da vida do Boss quando ele é atingido
 
             if (bossHP <= 0)
             {
@@ -54,21 +58,13 @@ public class Boss : MonoBehaviour
     private void Die()
     {
         Debug.Log("Boss defeated!");
-        Destroy(gameObject);
-        bossAgent.AddReward(1.0f); // Recompensa ao derrotar o boss
-        IncrementDifficulty(); // Incrementar dificuldade do Boss
-        RestartLevel(); // Reiniciar o nível
+        bossAgent.AddReward(1.0f);
+        EndEpisode();
     }
 
-    private void IncrementDifficulty()
+    public void EndEpisode()
     {
-        attackInterval = Mathf.Max(1f, attackInterval - 0.5f); // Diminuir o intervalo entre ataques
-        skyBeamSpeed += 0.5f; // Aumentar a velocidade do feixe aéreo
-        frontalBeamSpeed += 0.5f; // Aumentar a velocidade do feixe frontal
-    }
-
-    private void RestartLevel()
-    {
+        Debug.Log("Episode Ended.");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -83,7 +79,7 @@ public class Boss : MonoBehaviour
     {
         while (true)
         {
-            int attackChoice = Random.Range(0, 2); // 0 for frontal beam, 1 for sky beam
+            int attackChoice = Random.Range(0, 2);
 
             if (attackChoice == 0)
             {
@@ -101,7 +97,7 @@ public class Boss : MonoBehaviour
     private void AdjustBeamTargetPosition(bool hitPlayer)
     {
         float adjustment = hitPlayer ? -frontalBeamAdjustmentDistance : frontalBeamAdjustmentDistance;
-        frontalBeamTargetPosition.y += adjustment; // Ajusta a posição Y do ataque frontal
+        frontalBeamTargetPosition.y += adjustment;
     }
 
     private IEnumerator FrontalBeamAttack()
@@ -115,7 +111,7 @@ public class Boss : MonoBehaviour
 
         Vector3 endPosition = new Vector3(
             frontalBeamTargetPosition.x,
-            frontalBeamTargetPosition.y, // Usar a posição ajustada
+            frontalBeamTargetPosition.y,
             transform.position.z + 2
         );
 
@@ -128,15 +124,13 @@ public class Boss : MonoBehaviour
         {
             float distCovered = (Time.time - startTime) * frontalBeamSpeed;
             float fractionOfJourney = distCovered / journeyLength;
-            frontalBeam.transform.position = Vector3.Lerp(
-                startPosition,
-                endPosition,
-                fractionOfJourney
-            );
+            frontalBeam.transform.position = Vector3.Lerp(startPosition, endPosition, fractionOfJourney);
 
             if (frontalBeam.GetComponent<Collider2D>().IsTouchingLayers(LayerMask.GetMask("Player")))
             {
                 hitPlayer = true;
+                Player player = frontalBeam.GetComponent<Collider2D>().GetComponent<Player>();
+                player.TakeDamage(); // Atinge o player
                 break;
             }
 
@@ -147,14 +141,13 @@ public class Boss : MonoBehaviour
 
         if (hitPlayer)
         {
-            countAcertos++; // Incrementar contador de acertos
-            bossAgent.AddReward(1.0f); // Recompensa ao acertar o jogador
-            
-            // Reduzir a penalização a cada 5 acertos
+            countAcertos++;
+            bossAgent.AddReward(1.0f);
+
             if (countAcertos >= 5)
             {
                 countAcertos = 0;
-                escalaDePenalizacao = Mathf.Max(1, escalaDePenalizacao - 0.1f); // Não deixar a penalização abaixo de 1
+                escalaDePenalizacao = Mathf.Max(1, escalaDePenalizacao - 0.1f);
             }
         }
         else
@@ -165,10 +158,10 @@ public class Boss : MonoBehaviour
                 countErros = 0;
                 escalaDePenalizacao += 0.1f;
             }
-            bossAgent.AddReward(-1.0f * escalaDePenalizacao); // Penalidade ao errar
+            bossAgent.AddReward(-1.0f * escalaDePenalizacao);
         }
 
-        AdjustBeamTargetPosition(hitPlayer); // Ajustar a posição após cada ataque
+        AdjustBeamTargetPosition(hitPlayer);
     }
 
     private IEnumerator SkyBeamAttack()
@@ -191,16 +184,14 @@ public class Boss : MonoBehaviour
 
         while (elapsedTime < beamDuration)
         {
-            skyBeam.transform.position = Vector3.Lerp(
-                startPosition,
-                endPosition,
-                elapsedTime / beamDuration
-            );
+            skyBeam.transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / beamDuration);
             elapsedTime += Time.deltaTime;
 
             if (skyBeam.GetComponent<Collider2D>().IsTouchingLayers(LayerMask.GetMask("Player")))
             {
                 hitPlayer = true;
+                Player player = skyBeam.GetComponent<Collider2D>().GetComponent<Player>();
+                player.TakeDamage(); // Atinge o player
                 break;
             }
 
@@ -211,22 +202,28 @@ public class Boss : MonoBehaviour
 
         if (hitPlayer)
         {
-            countAcertos++; // Incrementar contador de acertos
-            bossAgent.AddReward(1.0f); // Recompensa ao acertar o jogador
-            
-            // Reduzir a penalização a cada 5 acertos
+            countAcertos++;
+            bossAgent.AddReward(1.0f);
+
             if (countAcertos >= 5)
             {
                 countAcertos = 0;
-                escalaDePenalizacao = Mathf.Max(1, escalaDePenalizacao - 0.1f); // Não deixar a penalização abaixo de 1
+                escalaDePenalizacao = Mathf.Max(1, escalaDePenalizacao - 0.1f);
             }
         }
         else
         {
-            bossAgent.AddReward(-1.0f); // Penalidade ao errar
+            bossAgent.AddReward(-1.0f);
         }
 
-        // Ajuste a posição do ataque aéreo se necessário
-        AdjustBeamTargetPosition(hitPlayer); // Opcional, se você quiser aplicar a mesma lógica
+        AdjustBeamTargetPosition(hitPlayer);
+    }
+
+    private void UpdateBossHealthText()
+    {
+        if (bossHealthText != null)
+        {
+            bossHealthText.text = "Boss Health: " + bossHP.ToString();
+        }
     }
 }

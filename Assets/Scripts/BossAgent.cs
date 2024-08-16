@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
@@ -6,31 +7,39 @@ using Unity.MLAgents.Actuators;
 public class BossAgent : Agent
 {
     [SerializeField] private Transform targetTransform;
-    [SerializeField] private GameObject[] floorObjects; // Altere para um array de GameObjects
-    [SerializeField] private Player player; // Adicione uma referência ao script Player
-    private Rigidbody2D rb;
+    [SerializeField] private GameObject[] floorObjects;
+    [SerializeField] private Player player;
+    [SerializeField] private TextMeshProUGUI bossHealthText;
+    [SerializeField] private TextMeshProUGUI playerHealthText;
 
+    private Rigidbody2D rb;
     private float timer;
-    private const float TimeLimit = 20f; // Limite de tempo de 20 segundos
+    private const float TimeLimit = 20f;
+
+    public int bossHP = 10;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        UpdateHealthUI();
     }
 
     public override void OnEpisodeBegin()
     {
-        // Resetar a posição do boss
         transform.localPosition = Vector3.zero;
-        rb.velocity = Vector2.zero; // Resetar a velocidade do Rigidbody2D
-        timer = 0f; // Resetar o timer no início do episódio
+        rb.velocity = Vector2.zero;
+        timer = 0f;
 
-        // Reposicionar o player em uma posição aleatória dentro do intervalo
         player.transform.localPosition = new Vector3(
             Random.Range(-7.96f, -2.396f),
             Random.Range(3.75f, -1.45f),
             0
         );
+
+        player.playerHP = 5;
+        bossHP = 10;
+
+        UpdateHealthUI();
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -44,17 +53,15 @@ public class BossAgent : Agent
         float moveX = actions.ContinuousActions[0];
         float moveY = actions.ContinuousActions[1];
 
-        Vector2 movement = new Vector2(moveX, moveY) * Time.deltaTime * 100f; // Movimento em 2D
-        rb.velocity = movement; // Aplicar movimento ao Rigidbody2D
+        Vector2 movement = new Vector2(moveX, moveY) * Time.deltaTime * 100f;
+        rb.velocity = movement;
 
-        // Atualizar o timer
         timer += Time.deltaTime;
 
-        // Penalidade se o tempo limite for alcançado sem acertar o player
         if (timer > TimeLimit)
         {
             SetReward(-0.5f);
-            EndEpisode();
+            CheckEndCondition();
         }
     }
 
@@ -69,14 +76,57 @@ public class BossAgent : Agent
     {
         if (other.TryGetComponent<Goal>(out Goal goal))
         {
-            SetReward(+1f);
-            ChangeFloorObjectsColor(Color.green); // Altere a cor para verde
-            EndEpisode(); // Finaliza o episódio apenas para este agente
+            SetReward(+0.2f);
+            ChangeFloorObjectsColor(Color.green);
+            CheckEndCondition();
         }
         else if (other.TryGetComponent<Wall>(out Wall wall))
         {
+            bossHP--; // Boss perde 1 de HP ao colidir com uma parede
+            ChangeFloorObjectsColor(Color.red); // A parede e o chão mudam de cor para vermelho
+            UpdateHealthUI();
             SetReward(-0.1f); // Penalidade menor ao bater na parede
-            ChangeFloorObjectsColor(Color.red); // Altere a cor para vermelho
+
+            if (bossHP <= 0)
+            {
+                Debug.Log("Boss defeated!");
+                SetReward(-1.0f);
+                CheckEndCondition();
+            }
+        }
+        else if (other.gameObject.CompareTag("Sword"))
+        {
+            player.TakeDamage();
+            UpdateHealthUI();
+            SetReward(+0.2f);
+
+            if (bossHP <= 0)
+            {
+                Debug.Log("Boss defeated!");
+                SetReward(-1.0f);
+                CheckEndCondition();
+            }else if (player.playerHP <= 0)
+            {
+                SetReward(1.0f);
+                CheckEndCondition();
+            }
+        }
+        else if (other.gameObject.CompareTag("Beam"))
+        {
+            bossHP--;
+            UpdateHealthUI();
+            SetReward(-0.2f);
+
+            if (bossHP <= 0)
+            {
+                Debug.Log("Boss defeated!");
+                SetReward(-1.0f);
+                CheckEndCondition();
+            }else if (player.playerHP <= 0)
+            {
+                SetReward(1.0f);
+                CheckEndCondition();
+            }
         }
     }
 
@@ -96,6 +146,27 @@ public class BossAgent : Agent
                     Debug.LogWarning("SpriteRenderer not found on " + floorObject.name);
                 }
             }
+        }
+    }
+
+    public void UpdateHealthUI()
+    {
+        if (bossHealthText != null)
+        {
+            bossHealthText.text = "Boss HP: " + bossHP;
+        }
+
+        if (playerHealthText != null)
+        {
+            playerHealthText.text = "Player HP: " + player.playerHP;
+        }
+    }
+
+    public void CheckEndCondition()
+    {
+        if (bossHP <= 0 || player.playerHP <= 0)
+        {
+            EndEpisode();
         }
     }
 }
