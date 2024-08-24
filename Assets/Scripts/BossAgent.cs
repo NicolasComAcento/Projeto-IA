@@ -6,11 +6,11 @@ using Unity.MLAgents.Actuators;
 
 public class BossAgent : Agent
 {
-    [SerializeField] private Transform targetTransform;
-    [SerializeField] private GameObject[] floorObjects;
-    [SerializeField] private Player player;
-    [SerializeField] private TextMeshProUGUI bossHealthText;
-    [SerializeField] private TextMeshProUGUI playerHealthText;
+    [SerializeField] private Transform targetTransform; // Referência ao player
+    [SerializeField] private GameObject[] floorObjects; // Objetos do chão
+    [SerializeField] private PlayerAgent playerAgent; // Referência ao PlayerAgent
+    [SerializeField] private TextMeshProUGUI bossHealthText; // UI de vida do boss
+    [SerializeField] private TextMeshProUGUI playerHealthText; // UI de vida do player
 
     private Rigidbody2D rb;
     private float timer;
@@ -30,23 +30,29 @@ public class BossAgent : Agent
         rb.velocity = Vector2.zero;
         timer = 0f;
 
-        player.transform.localPosition = new Vector3(
+        // Posicionar o player em uma posição inicial aleatória
+        playerAgent.transform.localPosition = new Vector3(
             Random.Range(-7.96f, -2.396f),
             Random.Range(3.75f, -1.45f),
             0
         );
 
-        player.playerHP = 5;
+        // Resetar a vida do player e do boss
+        playerAgent.playerHP = 5;
         bossHP = 10;
 
         UpdateHealthUI();
     }
 
     public override void CollectObservations(VectorSensor sensor)
-    {
-        sensor.AddObservation(transform.localPosition);
-        sensor.AddObservation(targetTransform.localPosition);
-    }
+{
+    // O número de observações aqui deve ser consistente com o esperado.
+    // Supondo que o sensor espere 4 observações: 2 para a posição do boss e 2 para a posição do player.
+
+    sensor.AddObservation(transform.localPosition); // 2 observações (x, y)
+    sensor.AddObservation(targetTransform.localPosition); // 2 observações (x, y)
+}
+
 
     public override void OnActionReceived(ActionBuffers actions)
     {
@@ -58,6 +64,7 @@ public class BossAgent : Agent
 
         timer += Time.deltaTime;
 
+        // Penalidade por tempo limite
         if (timer > TimeLimit)
         {
             SetReward(-0.5f);
@@ -85,7 +92,7 @@ public class BossAgent : Agent
             bossHP--; // Boss perde 1 de HP ao colidir com uma parede
             ChangeFloorObjectsColor(Color.red); // A parede e o chão mudam de cor para vermelho
             UpdateHealthUI();
-            SetReward(-0.1f); // Penalidade menor ao bater na parede
+            SetReward(-0.4f); // Penalidade menor ao bater na parede
 
             if (bossHP <= 0)
             {
@@ -94,79 +101,55 @@ public class BossAgent : Agent
                 CheckEndCondition();
             }
         }
-        else if (other.gameObject.CompareTag("Sword"))
+        else if (other.gameObject.CompareTag("Player")) // Colisão com o player
         {
-            player.TakeDamage();
+            playerAgent.TakeDamage(2); // Causa 2 de dano ao player
             UpdateHealthUI();
-            SetReward(+0.2f);
+            SetReward(+0.5f);
 
-            if (bossHP <= 0)
+            if (playerAgent.playerHP <= 0)
             {
-                Debug.Log("Boss defeated!");
-                SetReward(-1.0f);
-                CheckEndCondition();
-            }else if (player.playerHP <= 0)
-            {
-                SetReward(1.0f);
+                SetReward(2.0f);
                 CheckEndCondition();
             }
         }
-        else if (other.gameObject.CompareTag("Beam"))
+        else if (other.gameObject.CompareTag("Beam")) // Colisão com o feixe
         {
-            bossHP--;
+            bossHP--; // Boss perde 1 de HP ao ser atingido
             UpdateHealthUI();
             SetReward(-0.2f);
+            Debug.Log("Hit by beam!");
 
             if (bossHP <= 0)
             {
                 Debug.Log("Boss defeated!");
                 SetReward(-1.0f);
                 CheckEndCondition();
-            }else if (player.playerHP <= 0)
-            {
-                SetReward(1.0f);
-                CheckEndCondition();
             }
-        }
-    }
-
-    private void ChangeFloorObjectsColor(Color color)
-    {
-        foreach (GameObject floorObject in floorObjects)
-        {
-            if (floorObject != null)
-            {
-                SpriteRenderer spriteRenderer = floorObject.GetComponent<SpriteRenderer>();
-                if (spriteRenderer != null)
-                {
-                    spriteRenderer.color = color;
-                }
-                else
-                {
-                    Debug.LogWarning("SpriteRenderer not found on " + floorObject.name);
-                }
-            }
-        }
-    }
-
-    public void UpdateHealthUI()
-    {
-        if (bossHealthText != null)
-        {
-            bossHealthText.text = "Boss HP: " + bossHP;
-        }
-
-        if (playerHealthText != null)
-        {
-            playerHealthText.text = "Player HP: " + player.playerHP;
         }
     }
 
     public void CheckEndCondition()
     {
-        if (bossHP <= 0 || player.playerHP <= 0)
+        if (playerAgent.playerHP <= 0 || bossHP <= 0)
         {
             EndEpisode();
         }
     }
+
+    private void ChangeFloorObjectsColor(Color color)
+    {
+        foreach (var obj in floorObjects)
+        {
+            obj.GetComponent<SpriteRenderer>().color = color;
+        }
+    }
+
+    public void UpdateHealthUI()
+    {
+        bossHealthText.text = $"Boss HP: {bossHP}";
+        playerHealthText.text = $"Player HP: {playerAgent.playerHP}";
+    }
 }
+
+

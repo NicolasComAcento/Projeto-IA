@@ -10,8 +10,8 @@ public class Player : MonoBehaviour
     private const float directionChangeInterval = 1.5f;
 
     // Limites de movimento do jogador
-    private Vector2 spawnAreaMin = new Vector2(-8.2f, -1.68f);
-    private Vector2 spawnAreaMax = new Vector2(8.09f, 4.07f);
+    private Vector2 spawnAreaMin = new Vector2(-8.34f, -1.42f);
+    private Vector2 spawnAreaMax = new Vector2(0.06f, 3.68f);
 
     // Configurações do projétil
     public GameObject projectilePrefab; // Prefab do projétil
@@ -79,6 +79,9 @@ public class Player : MonoBehaviour
         // Aplica uma força ao projétil para lançá-lo na direção escolhida
         Rigidbody2D projectileRb = projectile.GetComponent<Rigidbody2D>();
         projectileRb.velocity = shootDirection * 5f; // Ajuste a velocidade do projétil conforme necessário
+
+        // Destrói o projétil após 2 segundos
+        Destroy(projectile, 2f);
     }
 
     private bool IsOutsideSpawnArea()

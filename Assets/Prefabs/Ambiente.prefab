@@ -873,7 +873,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &6691950382900724938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -896,7 +896,7 @@ MonoBehaviour:
   - {fileID: 9023726798693218629}
   - {fileID: 7031724455137815790}
   - {fileID: 2887580037075013763}
-  player: {fileID: 7160941539555567889}
+  playerAgent: {fileID: 1584812160318969164}
   bossHealthText: {fileID: 3746866146522977005}
   playerHealthText: {fileID: 1862550709415549494}
   bossHP: 10
@@ -913,16 +913,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 6
+    VectorObservationSize: 12
     NumStackedVectorObservations: 1
     m_ActionSpec:
-      m_NumContinuousActions: 2
+      m_NumContinuousActions: 3
       BranchSizes: 01000000
     VectorActionSize: 
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 61d98524aa8cb7e4683a2c5c89bc22a1, type: 3}
   m_InferenceDevice: 3
   m_BehaviorType: 0
   m_BehaviorName: My Behavior
@@ -1338,11 +1338,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 932279004470750665, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.25
+      value: -2.05
       objectReference: {fileID: 0}
     - target: {fileID: 932279004470750665, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.68
+      value: 3.68
       objectReference: {fileID: 0}
     - target: {fileID: 932279004470750665, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1384,6 +1384,18 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Sword
       objectReference: {fileID: 0}
+    - target: {fileID: 5269718821425216007, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
+      propertyPath: m_BrainParameters.VectorObservationSize
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5269718821425216007, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5269718821425216007, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.m_NumContinuousActions
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6408359827747115803, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
     m_RemovedGameObjects: []
@@ -1391,17 +1403,22 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3283175618306131128, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
       insertIndex: 4
-      addedObject: {fileID: 7160941539555567889}
+      addedObject: {fileID: 1584812160318969164}
     - targetCorrespondingSourceObject: {fileID: 3283175618306131128, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9173340809683519839}
   m_SourcePrefab: {fileID: 100100000, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
+--- !u!4 &5020486699436638154 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4355524321460303909, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
+  m_PrefabInstance: {fileID: 8781373063737985007}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6074681428142261079 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3283175618306131128, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
   m_PrefabInstance: {fileID: 8781373063737985007}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7160941539555567889
+--- !u!114 &1584812160318969164
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1410,11 +1427,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 6074681428142261079}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 697878dbadb67414c8c143ee584f3cf9, type: 3}
+  m_Script: {fileID: 11500000, guid: 7fe89a641dc2d03408d038946defd255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 1000
+  bulletPrefab: {fileID: 8538999473035892579, guid: 28d9127f2cf2e1240ab79bac26679ef1, type: 3}
+  firePoint: {fileID: 5020486699436638154}
+  moveSpeed: 5
+  bulletSpeed: 10
+  boss: {fileID: 5720687415429910764}
+  walls:
+  - {fileID: 1209476290615931934}
+  - {fileID: 9023726798693218629}
+  - {fileID: 7031724455137815790}
+  - {fileID: 2887580037075013763}
   playerHP: 5
-  projectilePrefab: {fileID: 8538999473035892579, guid: 28d9127f2cf2e1240ab79bac26679ef1, type: 3}
+  fireRate: 1
 --- !u!50 &9173340809683519839
 Rigidbody2D:
   serializedVersion: 4

@@ -967,6 +967,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 619460495476903366, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4698896240288963523, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: 61d98524aa8cb7e4683a2c5c89bc22a1, type: 3}
+    - target: {fileID: 4698896240288963523, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      propertyPath: m_BehaviorType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5485420871920135680, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      propertyPath: m_BodyType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6691950382900724938, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      propertyPath: floorObjects.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7291047773954886375, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -23.2
@@ -1011,6 +1031,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ambiente (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 8443592438504876582, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.63
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1018,6 +1042,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7981652896521236283, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1749414776}
+    - targetCorrespondingSourceObject: {fileID: 6074681428142261079, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1834664881}
   m_SourcePrefab: {fileID: 100100000, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
 --- !u!1 &1620535458 stripped
 GameObject:
@@ -1073,6 +1100,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   environmentID: 9
+--- !u!1 &1834664874 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6074681428142261079, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+  m_PrefabInstance: {fileID: 1498795347}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &1834664881
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1834664874}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1879751658 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7981652896521236283, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
