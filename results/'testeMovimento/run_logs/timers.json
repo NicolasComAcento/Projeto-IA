@@ -1,0 +1,54 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1723061142",
+        "python_version": "3.8.10 (tags/v3.8.10:3d8993a, May  3 2021, 11:48:03) [MSC v.1928 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\nicol\\ml-agents\\venv\\Scripts\\mlagents-learn --run-id='testeMovimento --resume",
+        "mlagents_version": "0.29.0",
+        "mlagents_envs_version": "0.29.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "1.8.1+cpu",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1723061147"
+    },
+    "total": 5.6863687999999994,
+    "count": 1,
+    "self": 0.004814799999999231,
+    "children": {
+        "run_training.setup": {
+            "total": 0.03345419999999999,
+            "count": 1,
+            "self": 0.03345419999999999
+        },
+        "TrainerController.start_learning": {
+            "total": 5.6480998,
+            "count": 1,
+            "self": 9.669999999939449e-05,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 5.5803588,
+                    "count": 1,
+                    "self": 5.5803588
+                },
+                "trainer_threads": {
+                    "total": 5.000000005139782e-07,
+                    "count": 1,
+                    "self": 5.000000005139782e-07
+                },
+                "TrainerController._save_models": {
+                    "total": 0.06764379999999992,
+                    "count": 1,
+                    "self": 0.0055813999999996255,
+                    "children": {
+                        "RLTrainer._checkpoint": {
+                            "total": 0.062062400000000295,
+                            "count": 1,
+                            "self": 0.062062400000000295
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
