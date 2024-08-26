@@ -5,11 +5,19 @@ using UnityEngine;
 
 public class BossAgent : Agent
 {
+<<<<<<< Updated upstream
     private Rigidbody2D bossRb;
     private Boss boss;
     private Player player;
     private float initialAttackInterval;
     private int initialPlayerHP;
+=======
+    [SerializeField] private Transform targetTransform;
+    [SerializeField] private GameObject[] floorObjects;
+    [SerializeField] private PlayerAgent player;
+    [SerializeField] private TextMeshProUGUI bossHealthText;
+    [SerializeField] private TextMeshProUGUI playerHealthText;
+>>>>>>> Stashed changes
 
     public override void Initialize()
     {

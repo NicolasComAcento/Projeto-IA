@@ -31,8 +31,13 @@ Transform:
   m_GameObject: {fileID: 2168972472952943440}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+<<<<<<< Updated upstream:Assets/Prefabs/ambiente.prefab
   m_LocalPosition: {x: 13.482293, y: -2.1120791, z: 0.16867734}
   m_LocalScale: {x: 1, y: 1, z: 1}
+=======
+  m_LocalPosition: {x: 4.09, y: 2.5, z: 0}
+  m_LocalScale: {x: 0.47826567, y: 0.5366496, z: 1}
+>>>>>>> Stashed changes:Assets/Prefabs/Ambiente.prefab
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2882736159989508251}
@@ -204,7 +209,21 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 1000
+<<<<<<< Updated upstream:Assets/Prefabs/ambiente.prefab
 --- !u!114 &3137042967923813585
+=======
+  targetTransform: {fileID: 8443592438504876582}
+  floorObjects:
+  - {fileID: 1209476290615931934}
+  - {fileID: 9023726798693218629}
+  - {fileID: 7031724455137815790}
+  - {fileID: 2887580037075013763}
+  player: {fileID: 2730863413686336279}
+  bossHealthText: {fileID: 3746866146522977005}
+  playerHealthText: {fileID: 1862550709415549494}
+  bossHP: 10
+--- !u!114 &4698896240288963523
+>>>>>>> Stashed changes:Assets/Prefabs/Ambiente.prefab
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1318,7 +1337,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5951952641421579525, guid: 179d553cb3be24e44858ade80d28aca4, type: 3}
       propertyPath: m_LocalPosition.y
+<<<<<<< Updated upstream:Assets/Prefabs/ambiente.prefab
       value: 500
+=======
+      value: 1.53
+>>>>>>> Stashed changes:Assets/Prefabs/Ambiente.prefab
       objectReference: {fileID: 0}
     - target: {fileID: 5951952641421579525, guid: 179d553cb3be24e44858ade80d28aca4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1355,14 +1378,98 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
+<<<<<<< Updated upstream:Assets/Prefabs/ambiente.prefab
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 179d553cb3be24e44858ade80d28aca4, type: 3}
 --- !u!1 &1075788631282855078 stripped
+=======
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3283175618306131128, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2730863413686336279}
+    - targetCorrespondingSourceObject: {fileID: 3283175618306131128, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9173340809683519839}
+    - targetCorrespondingSourceObject: {fileID: 3283175618306131128, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7059013948339743584}
+  m_SourcePrefab: {fileID: 100100000, guid: 8a1e0c59371eddc4e973e4811a9de940, type: 3}
+--- !u!1 &6074681428142261079 stripped
+>>>>>>> Stashed changes:Assets/Prefabs/Ambiente.prefab
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2321181572996488425, guid: 179d553cb3be24e44858ade80d28aca4, type: 3}
   m_PrefabInstance: {fileID: 3376440061794447439}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream:Assets/Prefabs/ambiente.prefab
 --- !u!4 &8953740160391341386 stripped
+=======
+--- !u!114 &2730863413686336279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6074681428142261079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fe89a641dc2d03408d038946defd255, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
+  bossTransform: {fileID: 5720687415429910764}
+  walls:
+  - {fileID: 1209476290615931934}
+  - {fileID: 9023726798693218629}
+  - {fileID: 7031724455137815790}
+  - {fileID: 2887580037075013763}
+  playerHealthText: {fileID: 1862550709415549494}
+  playerHP: 5
+--- !u!50 &9173340809683519839
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6074681428142261079}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &7059013948339743584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6074681428142261079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 5
+  TakeActionsBetweenDecisions: 1
+--- !u!4 &8443592438504876582 stripped
+>>>>>>> Stashed changes:Assets/Prefabs/Ambiente.prefab
 Transform:
   m_CorrespondingSourceObject: {fileID: 5951952641421579525, guid: 179d553cb3be24e44858ade80d28aca4, type: 3}
   m_PrefabInstance: {fileID: 3376440061794447439}
