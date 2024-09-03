@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Goal : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    //esse script era usado no começo, era anexado ao player para sempre que o boss fosse interagir com isso ele fosse recompensado.
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         

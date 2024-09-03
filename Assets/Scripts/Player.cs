@@ -1,126 +1,128 @@
-using System.Collections;
+using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Unity.MLAgents;
-using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
+using Unity.MLAgents.Actuators;
 
-public class Player : Agent
+//script do player usado para os treinos com PPO e SAC, aqui o player tem um movimento
+//padrão e não vai aprendendo como no treino competitivo, o código para o competitivo
+// é o player agent.
+public class Player : MonoBehaviour
 {
-    public float speed = 5f;
-    public float jumpForce = 5f;
-    public int playerHP = 5; // Player hit points
-    public GameObject attackPrefab; // Prefab do ataque
-    public Transform attackPoint; // Ponto de origem do ataque
-    private Rigidbody2D rb;
-    public bool isGrounded;
-    //private Vector2 initialPosition;
-    private int initialPlayerHP;
+    public int playerHP = 5;
 
-    public override void Initialize()
+    private Vector2 movementDirection;
+    private Rigidbody2D rb;
+    private float changeDirectionTimer = 0f;
+    private const float directionChangeInterval = 1.5f;
+
+    // Limites de movimento do jogador
+    private Vector2 spawnAreaMin = new Vector2(-8.2f, -1.32f);
+    private Vector2 spawnAreaMax = new Vector2(-3.19f, 3.81f);
+
+    // Configurações do projétil
+    public GameObject projectilePrefab; // Prefab do projétil
+    private float shootTimer = 0f;
+    private const float shootInterval = 1f;
+
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Freeze rotation to keep the player upright
-        //initialPosition = transform.localPosition;
-        initialPlayerHP = playerHP;
+        ChangeDirection();
     }
-
-    public override void OnEpisodeBegin()
+    // Controles de direção e tiro do jogador, com tempo de respawn e restriçãos de movimentação para a área
+    private void Update()
     {
-        // Reset player position and health
-        //transform.localPosition = initialPosition;
-        playerHP = initialPlayerHP;
-        rb.velocity = Vector2.zero;
-    }
+        changeDirectionTimer += Time.deltaTime;
+        shootTimer += Time.deltaTime;
 
-    public override void CollectObservations(VectorSensor sensor)
-    {
-        sensor.AddObservation(transform.localPosition);
-        sensor.AddObservation(rb.velocity);
-        sensor.AddObservation(isGrounded);
-        sensor.AddObservation(playerHP);
-    }
-
-    public override void OnActionReceived(ActionBuffers actionBuffers)
-    {
-        // Actions, size = 3
-        float move = Mathf.Clamp(actionBuffers.ContinuousActions[0], -1f, 1f);
-        float jump = Mathf.Clamp(actionBuffers.ContinuousActions[1], 0f, 1f);
-        float attack = Mathf.Clamp(actionBuffers.ContinuousActions[2], 0f, 1f);
-
-        Move(move);
-        if (jump > 0.5f && isGrounded)
+        if (changeDirectionTimer >= directionChangeInterval)
         {
-            Jump();
+            ChangeDirection();
+            changeDirectionTimer = 0f;
         }
-        if (attack > 0.5f)
+
+        if (shootTimer >= shootInterval)
         {
-            Attack();
+            ShootProjectile();  // Lança um projétil a cada 1 segundo
+            shootTimer = 0f;
+        }
+
+        MovePlayer();
+
+        if (IsOutsideSpawnArea())
+        {
+            TeleportBackToArea();
         }
     }
 
-    public override void Heuristic(in ActionBuffers actionsOut)
+    private void MovePlayer()
     {
-        var continuousActionsOut = actionsOut.ContinuousActions;
-        // Geração de ações aleatórias
-        continuousActionsOut[0] = Random.Range(-1f, 1f); // Movimento para frente e para trás
-        continuousActionsOut[1] = Random.value > 0.8f ? 1f : 0f;  // Salto (20% de chance de pular)
-        continuousActionsOut[2] = Random.value > 0.7f ? 1f : 0f;  // Ataque (30% de chance de atacar)
+        rb.velocity = movementDirection * 2f; // Ajuste a velocidade conforme necessário
     }
 
-    void Move(float direction)
+    private void ChangeDirection()
     {
-        Vector2 move = new Vector2(direction * speed, rb.velocity.y);
-        rb.velocity = move;
+        movementDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
     }
 
-    void Jump()
+    private void ShootProjectile()
     {
-        rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-    }
+        // Instancia o projétil na posição e rotação atual do jogador
+        GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
 
-    void Attack()
-    {
-        // Instantiate attack prefab at attack point
-        if (attackPrefab != null && attackPoint != null)
+        // Define as direções básicas (cima, baixo, esquerda, direita)
+        Vector2[] directions = new Vector2[]
         {
-            Instantiate(attackPrefab, attackPoint.position, attackPoint.rotation);
-        }
+            Vector2.up,    // Cima
+            Vector2.down,  // Baixo
+            Vector2.left,  // Esquerda
+            Vector2.right  // Direita
+        };
+
+        // Escolhe uma direção aleatória entre as quatro
+        Vector2 shootDirection = directions[Random.Range(0, directions.Length)];
+
+        // Aplica uma força ao projétil para lançá-lo na direção escolhida
+        Rigidbody2D projectileRb = projectile.GetComponent<Rigidbody2D>();
+        projectileRb.velocity = shootDirection * 5f; // Ajuste a velocidade do projétil conforme necessário
     }
 
-    void OnCollisionStay2D(Collision2D collision)
+    // Mantém o player na área certa, pois como explicado antes as paredes não tem física,
+    // porque a ideia é o boss não passar por elas não porque ele não pode, mas porque ele aprendeu que é ruim
+    private bool IsOutsideSpawnArea()
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
+        return transform.localPosition.x < spawnAreaMin.x || transform.localPosition.x > spawnAreaMax.x ||
+               transform.localPosition.y < spawnAreaMin.y || transform.localPosition.y > spawnAreaMax.y;
     }
 
-    void OnCollisionExit2D(Collision2D collision)
+    private void TeleportBackToArea()
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
-        }
+        transform.localPosition = new Vector3(
+            Random.Range(spawnAreaMin.x, spawnAreaMax.x),
+            Random.Range(spawnAreaMin.y, spawnAreaMax.y),
+            0
+        );
     }
-
-    void OnTriggerEnter2D(Collider2D other)
+    //Interage com o script do boss para diminuir a vida do player, no caso do PPO e do SAC
+    // onde estavamos treinando só o boss as mudanças e coisas como a finalização de episodio
+    // acontecem apenas no script do boss, com o script do player com as referencias para mudar lá.
+    public void TakeDamage()
     {
-        if (other.gameObject.CompareTag("Beam") || other.gameObject.CompareTag("Boss"))
-        {
-            playerHP--;
-            Debug.Log("Player hit! Current HP: " + playerHP);
+        playerHP--;
+        FindObjectOfType<BossAgent>().UpdateHealthUI();
 
-            if (playerHP <= 0)
-            {
-                Die();
-            }
+        Debug.Log("Player hit HP: " + playerHP);
+
+        if (playerHP <= 0)
+        {
+            Die();
         }
     }
 
     private void Die()
     {
-        Debug.Log("Player died!");
-        EndEpisode();
+        Debug.Log("Player defeated!");
+        FindObjectOfType<BossAgent>().CheckEndCondition(); 
     }
 }
