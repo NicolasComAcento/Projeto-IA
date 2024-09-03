@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ezios\\OneDrive\\Documentos\\Minhas coisas\\Programacao\\Projeto-IA\\Assembly-CSharp.csproj",
+      "projectUniqueName": "C:\\Users\\ezios\\OneDrive\\Documentos\\Minhas coisas\\Programacao\\Projeto-IA\\Unity\\Assembly-CSharp.csproj",
       "projectName": "Assembly-CSharp",
-      "projectPath": "C:\\Users\\ezios\\OneDrive\\Documentos\\Minhas coisas\\Programacao\\Projeto-IA\\Assembly-CSharp.csproj",
+      "projectPath": "C:\\Users\\ezios\\OneDrive\\Documentos\\Minhas coisas\\Programacao\\Projeto-IA\\Unity\\Assembly-CSharp.csproj",
       "packagesPath": "C:\\Users\\ezios\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ezios\\OneDrive\\Documentos\\Minhas coisas\\Programacao\\Projeto-IA\\Temp\\obj\\Debug\\Assembly-CSharp\\",
+      "outputPath": "C:\\Users\\ezios\\OneDrive\\Documentos\\Minhas coisas\\Programacao\\Projeto-IA\\Unity\\Temp\\obj\\Debug\\Assembly-CSharp\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ezios\\AppData\\Roaming\\NuGet\\NuGet.Config"
