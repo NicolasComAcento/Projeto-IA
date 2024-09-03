@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    // esse código fera o código do player no inicio, mas depois da mudança de como o jogo funcionava ele acabou ficando obsoleto deixamos aqui
+    // apenas para mostrar as etapas do processo
     public float speed = 5f;
     public float jumpForce = 5f;
     public int playerHP = 5; // Player hit points

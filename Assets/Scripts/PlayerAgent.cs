@@ -6,6 +6,9 @@ using TMPro;
 
 public class PlayerAgent : Agent
 {
+    // Esse é o script do playeragent usado para o treino competitivo
+    //ele funciona como o bossagent só que para o player, com as mudanças
+    //da movimentação e forma como o player ataca
     [SerializeField] private Transform bossTransform;
     [SerializeField] private GameObject[] walls;
     [SerializeField] private TextMeshProUGUI playerHealthText;
@@ -36,13 +39,14 @@ public class PlayerAgent : Agent
 
         UpdateHealthUI();
     }
-
+    //mesma coisa do boss ele coleta informações da propria posição e do boss
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(transform.localPosition);
         sensor.AddObservation(bossTransform.localPosition);
     }
 
+    // duas ações uma para o eixo x e outra para o eixo y para evitar que o player fique parado
     public override void OnActionReceived(ActionBuffers actions)
     {
         float moveX = actions.ContinuousActions[0];
@@ -60,10 +64,6 @@ public class PlayerAgent : Agent
             safeTime = 0f;
         }
 
-        if (IsOutsideSpawnArea())
-        {
-            TeleportBackToArea();
-        }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -73,6 +73,7 @@ public class PlayerAgent : Agent
         continuousActions[1] = Input.GetAxisRaw("Vertical");
     }
 
+    //recompensas e colisões para o player
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent<BossAgent>(out BossAgent boss))
@@ -85,6 +86,7 @@ public class PlayerAgent : Agent
                 EndEpisode();
             }
         }
+        // penaliza o player quando ele encosta nas paredes pelo mesmo motivo do boss
         else if (other.TryGetComponent<Wall>(out Wall wall))
         {
             TakeDamage();
@@ -96,22 +98,7 @@ public class PlayerAgent : Agent
             }
         }
     }
-
-    private bool IsOutsideSpawnArea()
-    {
-        return transform.localPosition.x < -7.96f || transform.localPosition.x > -2.396f ||
-               transform.localPosition.y < -1.45f || transform.localPosition.y > 3.75f;
-    }
-
-    private void TeleportBackToArea()
-    {
-        transform.localPosition = new Vector3(
-            Random.Range(-7.96f, -2.396f),
-            Random.Range(-1.45f, 3.75f),
-            0
-        );
-    }
-
+    
     public void TakeDamage()
     {
         playerHP--;
