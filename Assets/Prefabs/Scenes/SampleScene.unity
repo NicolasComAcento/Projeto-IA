@@ -354,6 +354,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ambiente (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 8443592438504876582, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 8443592438504876582, guid: 91a50cf1ce0db6841bc0819d57b5df5b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.63
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

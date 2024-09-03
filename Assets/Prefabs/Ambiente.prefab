@@ -916,13 +916,13 @@ MonoBehaviour:
     VectorObservationSize: 6
     NumStackedVectorObservations: 1
     m_ActionSpec:
-      m_NumContinuousActions: 2
-      BranchSizes: 01000000
-    VectorActionSize: 
+      m_NumContinuousActions: 3
+      BranchSizes: 
+    VectorActionSize: 03000000
     VectorActionDescriptions: []
-    VectorActionSpaceType: 0
+    VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 61d98524aa8cb7e4683a2c5c89bc22a1, type: 3}
   m_InferenceDevice: 3
   m_BehaviorType: 0
   m_BehaviorName: My Behavior

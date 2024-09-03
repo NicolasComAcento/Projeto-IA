@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+// Esse é o script do boss que usamos iniciamente, aqui o boss ainda lançava projeteis e tinha uam estrutura pior
+// para o treino, bastante coisa daqui foi reaprovietada no script BossAgent, la via ser explicado melhor.
 public class Boss : MonoBehaviour
 {
     public GameObject frontalBeamPrefab;
@@ -12,13 +14,13 @@ public class Boss : MonoBehaviour
     public float skyBeamStartHeight = 10f;
     public float skyBeamSpeed = 5f;
     public float frontalBeamSpeed = 5f;
-    public int bossHP = 10; // Atualizado para 10
+    public int bossHP = 10;
     public float escalaDePenalizacao = 1;
     public int countErros = 0;
     public int countAcertos = 0;
     public float damageCooldown = 0.2f;
     public float frontalBeamAdjustmentDistance = 0.5f;
-    public TextMeshProUGUI bossHealthText; // Referência ao TextMeshPro
+    public TextMeshProUGUI bossHealthText;
 
     [HideInInspector]
     public Vector2 frontalBeamTargetPosition = new Vector2(-9, 0);
@@ -33,7 +35,7 @@ public class Boss : MonoBehaviour
     {
         bossAgent = GetComponent<BossAgent>();
         StartCoroutine(AttackRoutine());
-        UpdateBossHealthText(); // Atualiza o texto da vida do Boss no início
+        UpdateBossHealthText(); 
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -42,7 +44,7 @@ public class Boss : MonoBehaviour
         {
             bossHP--;
             Debug.Log("Boss hit! Current HP: " + bossHP);
-            UpdateBossHealthText(); // Atualiza o texto da vida do Boss quando ele é atingido
+            UpdateBossHealthText(); 
 
             if (bossHP <= 0)
             {

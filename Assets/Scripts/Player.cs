@@ -1,5 +1,12 @@
+using TMPro;
 using UnityEngine;
+using Unity.MLAgents;
+using Unity.MLAgents.Sensors;
+using Unity.MLAgents.Actuators;
 
+//script do player usado para os treinos com PPO e SAC, aqui o player tem um movimento
+//padrão e não vai aprendendo como no treino competitivo, o código para o competitivo
+// é o player agent.
 public class Player : MonoBehaviour
 {
     public int playerHP = 5;
@@ -10,8 +17,8 @@ public class Player : MonoBehaviour
     private const float directionChangeInterval = 1.5f;
 
     // Limites de movimento do jogador
-    private Vector2 spawnAreaMin = new Vector2(-8.2f, -1.68f);
-    private Vector2 spawnAreaMax = new Vector2(8.09f, 4.07f);
+    private Vector2 spawnAreaMin = new Vector2(-8.2f, -1.32f);
+    private Vector2 spawnAreaMax = new Vector2(-3.19f, 3.81f);
 
     // Configurações do projétil
     public GameObject projectilePrefab; // Prefab do projétil
@@ -23,7 +30,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         ChangeDirection();
     }
-
+    // Controles de direção e tiro do jogador, com tempo de respawn e restriçãos de movimentação para a área
     private void Update()
     {
         changeDirectionTimer += Time.deltaTime;
@@ -81,6 +88,8 @@ public class Player : MonoBehaviour
         projectileRb.velocity = shootDirection * 5f; // Ajuste a velocidade do projétil conforme necessário
     }
 
+    // Mantém o player na área certa, pois como explicado antes as paredes não tem física,
+    // porque a ideia é o boss não passar por elas não porque ele não pode, mas porque ele aprendeu que é ruim
     private bool IsOutsideSpawnArea()
     {
         return transform.localPosition.x < spawnAreaMin.x || transform.localPosition.x > spawnAreaMax.x ||
@@ -95,13 +104,15 @@ public class Player : MonoBehaviour
             0
         );
     }
-
+    //Interage com o script do boss para diminuir a vida do player, no caso do PPO e do SAC
+    // onde estavamos treinando só o boss as mudanças e coisas como a finalização de episodio
+    // acontecem apenas no script do boss, com o script do player com as referencias para mudar lá.
     public void TakeDamage()
     {
         playerHP--;
-        FindObjectOfType<BossAgent>().UpdateHealthUI(); // Atualiza a UI ao receber dano
+        FindObjectOfType<BossAgent>().UpdateHealthUI();
 
-        Debug.Log("Player hit! Current HP: " + playerHP);
+        Debug.Log("Player hit HP: " + playerHP);
 
         if (playerHP <= 0)
         {
@@ -112,6 +123,6 @@ public class Player : MonoBehaviour
     private void Die()
     {
         Debug.Log("Player defeated!");
-        FindObjectOfType<BossAgent>().CheckEndCondition(); // Verifica se o episódio deve terminar
+        FindObjectOfType<BossAgent>().CheckEndCondition(); 
     }
 }
