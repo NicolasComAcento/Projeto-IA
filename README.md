@@ -18,17 +18,21 @@ pip instalado
 
 1. Instalando o PyTorch
 O ML-Agents utiliza o PyTorch como backend. Instale-o de acordo com seu sistema operacional e configuração de GPU (opcional).
+
 CPU
 pip install torch torchvision torchaudio
+
 Caso tenha uma GPU e deseje usar CUDA use o seguinte comando em vez do anterior:
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 2. Instalando o ML-Agents
+   
 Instale a biblioteca mlagents e os pacotes necessários para treinar e executar modelos no Unity.
 pip install mlagents==0.29.0
+
 IMPORTANTE: certifique-se que todo processo anterior foi feito com as versões corretas, caso contrário o mlagents vai dar problema.
 
-3. Executando um Treinamento de Teste
+4. Executando um Treinamento de Teste
 Depois de abrir o Unity na cena do projeto siga os seguintes passos no CMD
 
 Navegar para o diretório do projeto ml-agents
