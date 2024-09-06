@@ -9,6 +9,8 @@ PT-BR
 
 Vídeo de um dos primeiros testes usando PPO: https://youtu.be/zAxB5Y-3joY
 
+Vídeo mostrando PPO treinado: https://youtu.be/9LqU97hjvD4
+
 Vídeo mostrando SAC treinado: https://youtu.be/u-IZWOWod_M
 
 Guia básico de como configurar o Unity ML-Agents
@@ -86,6 +88,12 @@ ENGLISH
 [Research Report(only pt-br)](/relatorio)
 
 [Scripts](/Assets/Scripts/)
+
+Video of one of the first tests using PPO: https://youtu.be/zAxB5Y-3joY
+
+Video showing PPO trained: https://youtu.be/9LqU97hjvD4
+
+Video showing SAC trained: https://youtu.be/u-IZWOWod_M
 
 Basic Guide to Setting Up Unity ML-Agents
 
