@@ -14,6 +14,7 @@ Vídeo mostrando SAC treinado: https://youtu.be/u-IZWOWod_M
 Guia básico de como configurar o Unity ML-Agents
 
 Guia de Configuração - Unity ML-Agents
+
 Este guia descreve os passos necessários para configurar o ambiente e rodar testes utilizando o Unity ML-Agents com suporte para PyTorch.
 
 Requisitos
@@ -87,7 +88,9 @@ ENGLISH
 [Scripts](/Assets/Scripts/)
 
 Basic Guide to Setting Up Unity ML-Agents
+
 Configuration Guide - Unity ML-Agents
+
 This guide outlines the necessary steps to configure the environment and run tests using Unity ML-Agents with PyTorch support.
 
 Requirements
