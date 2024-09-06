@@ -1,7 +1,11 @@
 PT-BR
+
 [Apresentação](/apresentacao)
+
 [Relatório](/relatorio)
+
 [Códigos](/Assets/Scripts/)
+
 
 Vídeo de um dos primeiros testes usando PPO: https://youtu.be/zAxB5Y-3joY
 Vídeo mostrando SAC treinado: https://youtu.be/u-IZWOWod_M
@@ -52,10 +56,13 @@ mlagents-learn config.yaml --run-id=NomeDoTesteAqui # Se quiser rodar com o SAC 
 Se tudo deu certo essa tela deve aparecer, então é só der Play no editor do Unity e começar seus testes.
 
 4. Monitorando o Treinamento
+   
 Para uma melhor visualização dos resultados, como mostrado no artigo usamo o TensorBoard, para instala-lo use o seguinte comando
+
 pip install tensorboard e tensorboard --logdir="results" para visualização, os resultados do treino vão automaticamente para a bata results.
 
 5. Usando modelo já treinado no Unity
+   
 Quando o treinamento terminar, o modelo treinado será salvo na pasta results. Esse modelo pode ser usado diretamente no Unity para fazer inferências.
 Importe o modelo gerado no Unity:
 Acesse results > escolha a pasta do treino desejado e selecione o arquivo .onnx gerado.
@@ -66,8 +73,11 @@ Documentação oficial do ML-Agents -> https://github.com/Unity-Technologies/ml-
 
 _______________________________________________________________________________________________________________________________________________________________________________________________________
 ENGLISH
-[presentation(only pt-br](/apresentacao) 
+
+[Presentation(only pt-br)](/apresentacao) 
+
 [Research Report(only pt-br)](/relatorio)
+
 [Scripts](/Assets/Scripts/)
 
 Basic Guide to Setting Up Unity ML-Agents
