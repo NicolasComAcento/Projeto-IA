@@ -8,6 +8,7 @@ PT-BR
 
 
 Vídeo de um dos primeiros testes usando PPO: https://youtu.be/zAxB5Y-3joY
+
 Vídeo mostrando SAC treinado: https://youtu.be/u-IZWOWod_M
 
 Guia básico de como configurar o Unity ML-Agents
@@ -40,15 +41,19 @@ IMPORTANTE: certifique-se que todo processo anterior foi feito com as versões c
 Depois de abrir o Unity na cena do projeto siga os seguintes passos no CMD
 
 Navegar para o diretório do projeto ml-agents
+
 cd C:\Users\nicol\ml-agents # Vai ser onde o seu projeto foi baixado basta copiar o caminho
 
 Ativar o ambiente virtual
+
 venv\Scripts\activate  # No Windows
 
 Certifique-se de que o arquivo config.yaml está na pasta do projeto Unity
+
 cd Project  # Coloca a pasta no lugar de Project, só copiar o caminho
 
 Iniciar o treinamento
+
 mlagents-learn config.yaml --run-id=NomeDoTesteAqui # Se quiser rodar com o SAC isso deve ser usado para inciar o treinamento, caso queria com o PPO basta tirar o config.yaml
 
 ![image](https://github.com/user-attachments/assets/89484d4e-0d25-49bb-84b4-532bfd5cc1ca)
@@ -69,6 +74,7 @@ Acesse results > escolha a pasta do treino desejado e selecione o arquivo .onnx 
 Aplique o modelo ao agente em sua cena para que ele utilize o comportamento treinado.
 
 Qualquer dúvida entrar em contato com Nicolaspnovaes@gmail.com
+
 Documentação oficial do ML-Agents -> https://github.com/Unity-Technologies/ml-agents
 
 _______________________________________________________________________________________________________________________________________________________________________________________________________
@@ -89,32 +95,42 @@ Unity (version 2022.3.26f1 for this project)
 Python 3.7 or higher
 pip installed
 
-1. Installing PyTorch
+1. Installing PyTorch 
 ML-Agents uses PyTorch as the backend. Install it according to your operating system and GPU configuration (optional).
+
 CPU
 pip install torch torchvision torchaudio
+
 If you have a GPU and wish to use CUDA, use the following command instead of the previous one:
+
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
-2. Installing ML-Agents
+3. Installing ML-Agents
 Install the mlagents library and the necessary packages to train and run models in Unity.
+
 pip install mlagents==0.29.0
+
 IMPORTANT: Ensure that all previous steps were completed with the correct versions; otherwise, mlagents may encounter issues.
 
-3. Running a Test Training
+5. Running a Test Training
 After opening Unity with the project scene, follow these steps in the CMD:
 
 Navigate to the ML-Agents project directory:
+
 cd C:\Users\nicol\ml-agents  # This is where your project was downloaded; just copy the path
 
 Activate the virtual environment:
+
 venv\Scripts\activate  # On Windows
 
 Ensure that the config.yaml file is in the Unity project folder:
+
 cd Project  # Replace 'Project' with the actual path
 
 Start the training:
+
 mlagents-learn config.yaml --run-id=TestNameHere
+
 If you want to run with SAC, use this command to start the training. If you prefer PPO, you can omit config.yaml.
 
 ![image](https://github.com/user-attachments/assets/89484d4e-0d25-49bb-84b4-532bfd5cc1ca)
@@ -122,7 +138,9 @@ If you want to run with SAC, use this command to start the training. If you pref
 If everything went well, this screen should appear. Then, just click Play in the Unity editor and start your tests.
 
 4. Monitoring the Training
+   
 For better visualization of the results, as shown in the article, we use TensorBoard. To install it, use the following command:
+
 pip install tensorboard
 
 Then, run:
@@ -133,8 +151,11 @@ This will allow you to view the results, which will automatically be saved in th
 When training is complete, the trained model will be saved in the results folder. This model can be directly used in Unity for inference.
 
 Import the generated model into Unity: Access results > select the desired training folder and choose the generated .onnx file.
+
 Apply the model to the agent in your scene so that it utilizes the trained behavior.
+
 For any questions, contact: Nicolaspnovaes@gmail.com
+
 Official ML-Agents Documentation -> https://github.com/Unity-Technologies/ml-agents
 
 
